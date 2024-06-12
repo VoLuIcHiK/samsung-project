@@ -6,7 +6,6 @@ from ultralytics import YOLO
 import json
 import os
 from transport import Track_transport, Zone
-from utils import get_crop_x, is_inside_zone
 import hydra
 
 
