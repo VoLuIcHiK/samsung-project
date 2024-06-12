@@ -1,0 +1,8 @@
+
+# Игнорируемые папки
+.DS_Store
+.VideosGroup
+.jsons
+.videos
+.Проект
+.__pycache__
