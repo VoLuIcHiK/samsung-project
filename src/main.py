@@ -104,8 +104,8 @@ def main(cfg: DictConfig):
                     except Exception as e:
                         print(e)
 
-                    annotated_frame = cv2.resize(annotated_frame, size)
-                    cv2.imshow('Transport tracking', annotated_frame)
+                    #annotated_frame = cv2.resize(annotated_frame, size)
+                    #cv2.imshow('Transport tracking', annotated_frame)
                     #out.write(annotated_frame)
                     key = cv2.waitKey(1)
                     frame_idx_in_cond += 1
@@ -127,8 +127,9 @@ def main(cfg: DictConfig):
 
             d = dict.fromkeys(ts.type)
             for k in d.keys():
+                #сколько меток каждого класса было присвоено объекту
                 d[k] = ts.type.count(k)
-            type = max(d, key=d.get)
+            type = max(d, key=d.get) #класс объекта - максимальное количество меток этого класса
 
             if ts.inside_area:
                 count_dict[type] += 1
@@ -167,13 +168,11 @@ def main(cfg: DictConfig):
         result = [file_name, count_dict[2], car_avg_spd, count_dict[5], bus_avg_spd, count_dict[7], van_avg_spd]
 
         result_df.loc[i] = result
-
         video_capture.release()
-        cv2.destroyAllWindows()
+        cv2.destroyAllWindows() 
 
     print(result_df)
-    result_df.to_csv('result/submission.csv', index=False)
+    result_df.to_csv(f'result/prediction.csv', index=False)
 
 
-if __name__ == '__main__':
-    main()
+main()

@@ -3,4 +3,4 @@ params:
   VIDEOS_DIR: 'videos'
   JSONS_DIR: 'jsons'
   CLASSES: [2, 5, 7] # 2 - car, 5 - bus, 7 - truck
-  COLUMNS: ['file_name', 'num_cars', 'average_speed_cars', 'num_busses', 'average_speed_busses', 'num_trucks', 'average_speed_trucks']
+  COLUMNS: ['file_name', 'quantity_car', 'average_speed_car', 'quantity_van', 'average_speed_van', 'quantity_bus', 'average_speed_bus']
