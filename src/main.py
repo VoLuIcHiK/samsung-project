@@ -135,7 +135,7 @@ def main(cfg: DictConfig):
                 count_dict[type] += 1
 
             if ts.inside_area:
-                my_fps  = (video_fps / SKIPPED_FRAMES) # количество кадров, где был замечен объект
+                my_fps  = (video_fps / SKIPPED_FRAMES) # итоговый fps
                 seconds = (ts.frames[-1] - ts.frames[0] + 1) / my_fps #кол-во секунд = кол-во кадров / fps
                 m = 20 #кол-во метров между конусами 
                 #перевод скорости из м/с в км/ч: v_km_h = (v_m_s * 3600) / 1000 = v_m_s * 3.6
