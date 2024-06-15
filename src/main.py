@@ -7,22 +7,51 @@ import json
 import os
 from transport import Track_transport, Zone
 import hydra
+from tkinter import filedialog
+from tkinter import *  
 
 
-@hydra.main(version_base=None, config_path='config', config_name='config')
-def main(cfg: DictConfig):
+def interface():
+    root = Tk()
+    root.withdraw()
+    flag = 0
+    while flag == 0:
+        video = filedialog.askdirectory(title="Введите путь к директории с видео", initialdir='/Users/macbook/Desktop/Диплом samsung/samsung-project')
+        if video:
+            print("Путь к директории с видео:", video)
+            flag = 1
+        else:
+            print("Директория не выбрана")
+    while True:
+        json = filedialog.askdirectory(title="Введите путь к директории с разметкой",  initialdir='/Users/macbook/Desktop/Диплом samsung/samsung-project')
+        if json:
+            print("Путь к директории с разметкой:", json)
+            return video, json
+        else:
+            print("Директория не выбрана")
+
+
+
+
+#@hydra.main(version_base=None, config_path='config', config_name='config')
+def main(video_path, json_path):
     '''
     Основной алгоритм программы
 
     Args:
         cfg (DictConfig): файл с параметрами системы
     ''' 
-    print(OmegaConf.to_yaml(cfg))
-    COLUMNS = cfg.params.COLUMNS
-    SKIPPED_FRAMES = cfg.params.SKIPPED_FRAMES
-    VIDEO_DIR = cfg.params.VIDEOS_DIR
-    JSON_DIR = cfg.params.JSONS_DIR
-    CLASSES = cfg.params.CLASSES
+    #print(OmegaConf.to_yaml(cfg))
+    SKIPPED_FRAMES = 4
+    CLASSES = [2, 5, 7] # 2 - car, 5 - bus, 7 - truck
+    COLUMNS = ['file_name', 'quantity_car', 'average_speed_car', 'quantity_bus', 'average_speed_bus', 'quantity_van', 'average_speed_van']
+    #COLUMNS = cfg.params.COLUMNS
+    #SKIPPED_FRAMES = cfg.params.SKIPPED_FRAMES
+    #VIDEO_DIR = cfg.params.VIDEOS_DIR
+    #JSON_DIR = cfg.params.JSONS_DIR
+    VIDEO_DIR = video_path
+    JSON_DIR = json_path
+    #CLASSES = cfg.params.CLASSES
     if not os.path.exists('result'):
         os.mkdir('result')
     result_df = pd.DataFrame(columns=COLUMNS)
@@ -104,8 +133,8 @@ def main(cfg: DictConfig):
                     except Exception as e:
                         print(e)
 
-                    #annotated_frame = cv2.resize(annotated_frame, size)
-                    #cv2.imshow('Transport tracking', annotated_frame)
+                    annotated_frame = cv2.resize(annotated_frame, size)
+                    cv2.imshow('Transport tracking', annotated_frame)
                     #out.write(annotated_frame)
                     key = cv2.waitKey(1)
                     frame_idx_in_cond += 1
@@ -175,4 +204,5 @@ def main(cfg: DictConfig):
     result_df.to_csv(f'result/prediction.csv', index=False)
 
 
-main()
+video_path, json_path = interface()
+main(video_path, json_path)
